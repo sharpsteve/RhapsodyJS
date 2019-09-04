@@ -1,4 +1,5 @@
-function getJwt(client, tokenName, rhapVariableKey, rhapVariableSecret, relativeUrl) {
+function getJwt(client, tokenName, rhapVariableKey, rhapVariableSecret,
+	 relativeUrl) {
 	/*
 	Description: this checks to see whether a JSON web token exists for a REST client. If it doesn't,
 	a POST call is made to authorize the client, and the token is saved as a transientState object that
@@ -11,8 +12,8 @@ function getJwt(client, tokenName, rhapVariableKey, rhapVariableSecret, relative
 	@rhapVariableSecret: the variable name for the client's secret
 	*/
 	if (!transientState.getState(tokenName)) {
-		var auth = 'Basic ' + encodeBase64(getVariable(rhapVariableKey) + ':' + getVariable(rhapVariableSecret), 
-			false),
+		var auth = 'Basic ' + encodeBase64(getVariable(rhapVariableKey)
+			 + ':' + getVariable(rhapVariableSecret), false),
 			config = {
 				'relative-url': relativeUrl,
 				'content-type': 'application/x-www-form-urlencoded',
@@ -30,7 +31,7 @@ function getJwt(client, tokenName, rhapVariableKey, rhapVariableSecret, relative
 					}
 				]
 			};
-		var response = client.post(config, '');
+		var response = client.post(config, 'grant_type=client_credentials');
 		var body = JSON.parse(response.response),
 			token = body.access_token,
 			ttl = Number(body.expires_in) - 120,
